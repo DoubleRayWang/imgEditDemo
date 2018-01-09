@@ -15,7 +15,57 @@
 
 
 <div id="_clip_"></div>
-<div id="imagedit"></div>
+<div id="addDecorate">
+	<div>
+		<div class="elements_panel">
+			<ul>
+				<li data-type="Text"><i class="fa fa-pencil-square-o"></i><span>文字</span></li>
+				<li data-type="Shape">
+					<i></i>
+					<span>图形</span>
+					<ul>
+						<li data-type="Arrow"><i class="fa fa-long-arrow-right"></i><span class="small-font">箭头</span></li>
+						<li data-type="DoubleArrow"><i class="fa fa-arrows-h"></i><span class="small-font">双面箭头</span></li>
+						<li data-type="Line"><i class="fa fa-minus"></i><span class="small-font">线</span></li>
+						<li data-type="Rectangle"><i class="fa fa-square-o"></i><span class="small-font">矩形</span></li>
+						<li data-type="Circle"><i class="fa fa-circle-o"></i><span class="small-font">圆形</span></li>
+						<li data-type="Triangle"><i class="fa "></i><span class="small-font">三角形</span></li>
+						<li data-type="Diamond"><i class="fa "></i><span class="small-font">菱形</span></li>
+						<li data-type="Polygon"><i class="fa "></i><span class="small-font">多边形</span></li>
+						<li data-type="Star"><i class="fa fa-star-o"></i><span class="small-font">五角星</span></li>
+					</ul>
+				</li>
+				<li data-type="Image"><i class="fa fa-image"></i><span>图像</span></li>
+				<!--<li data-type="Crop"><i class="fa fa-crop"></i><span>裁剪</span></li>
+				<li data-type="Measure"><i class="fa fa-expand"></i><span>测量</span></li>-->
+			</ul>
+		</div>
+		<div id="canvas_container">
+			<canvas id="canvas"></canvas>
+		</div>
+		<div id="crop_image_ops">
+			<img src="" id="image_el" />
+		</div>
+		<div id="measure_image_ops">
+			<textarea id="measure_image"></textarea>
+		</div>
+	</div>
+	<div hidden>
+		<input type="file" id="image_file" accept="image/*" />
+	</div>
+	<div id="splash">
+		<span class="jumping-dots"><text>加载中...</text><span></span><span></span><span></span></span>
+	</div>
+	<div id="properties_dialogs">
+		<div id="prop_head"><span>属性编辑</span><input type="search" id="search_el" placeholder="查找特性" /></div>
+	</div>
+	<div id="coords_div">
+		<div>
+			<textarea id="points"></textarea>
+			<i></i>
+		</div>
+	</div>
+</div>
 
 
 
@@ -25,7 +75,7 @@
 <script src="js/fabric.js"></script>
 <script src="js/jquery.canvasAreaDraw.min.js"></script>
 <script src="js/jquery.Jcrop.min.js"></script>
-<script src="js/jquery.imageedit.js"></script>
+<script src="js/editor.js"></script>
 <script src="js/index.js"></script>
 </body>
 </html>

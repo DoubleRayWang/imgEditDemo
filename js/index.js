@@ -25,12 +25,20 @@ new $AC("#_clip_", 800, 800, 0, [
     "images/border/border2.png"
 ]).ok(function (base64, aiObj) {
     $('#_clip_').hide()
-    var image = $('#imagedit');
+    $('#addDecorate').show();
+    
+    fabric.Image.fromURL(base64, function (img) {
+        canvas.add(img);
+        canvas.centerObject(img);
+        img.setCoords();
+        canvas.setActiveObject(img);
+        canvas.renderAll();
+    })
+    /*var image = $('#imagedit');
     image.append('<img src="' + base64 + '">');
     image.children('img')[0].onload = function () {
-        console.log(2);
         if (this) {
-            $('img').imageEdit({
+            $(this).imageEdit({
                 maxScale: 3,
                 onReady: function () {
                     console.log("image loaded");
@@ -50,5 +58,5 @@ new $AC("#_clip_", 800, 800, 0, [
             });
         }
     }
-    aiObj.saveFile("AlloyCliped.jpg", 0.8);
+    aiObj.saveFile("AlloyCliped.jpg", 0.8);*/
 });
