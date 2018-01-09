@@ -6060,7 +6060,6 @@ fabric.Pattern = fabric.util.createClass(/** @lends fabric.Pattern.prototype */ 
 
       this.lowerCanvasEl.setAttribute('width', this.width * fabric.devicePixelRatio);
       this.lowerCanvasEl.setAttribute('height', this.height * fabric.devicePixelRatio);
-
       this.contextContainer.scale(fabric.devicePixelRatio, fabric.devicePixelRatio);
     },
 

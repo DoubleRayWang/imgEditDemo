@@ -280,7 +280,6 @@ $(document).ready(function () {
         var file = e.target.files[0];
         var reader = new FileReader();
         reader.onloadend = function () {
-            console.log(this.result)
             fabric.Image.fromURL(this.result, function (img) {
                 canvas.add(img);
                 canvas.centerObject(img);
@@ -343,7 +342,6 @@ $(document).ready(function () {
     
     $("body").bind("keydown", function (e) {
         var keyCode = e.keyCode;
-        console.log(keyCode)
         var preventDefault = false;
         if (selectedObj && e.target.nodeName == 'BODY') {
             switch (keyCode) {
@@ -723,7 +721,6 @@ function setProperties() {
                 $(this).removeAttr("checked");
             }
         }
-        // console.log(title);
         $(this).val(selectedVal);
     })
     $("#properties_dialogs").css("transform", "translate3d(" + (innerWidth - 240) + "px,20px,0)");
@@ -751,7 +748,6 @@ function startInterval() {
     tick_icon.insertAfter(target_el);
     close_icon.insertAfter(target_el);
     tick_icon.bind("click", function () {
-        console.log(coords);
         var can = document.createElement('canvas');
         var img = new Image();
         img.onload = function () {
