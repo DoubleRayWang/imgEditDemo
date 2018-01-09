@@ -30,4 +30,5 @@ li img {
     height: auto;
     float: none;
     margin: 0;
+    overflow: inherit;
 }
