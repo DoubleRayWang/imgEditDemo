@@ -1,8 +1,8 @@
 //禁止右键菜单
-/*$('#_clip_').on('contextmenu',function (e) {
+$('#_clip_').on('contextmenu',function (e) {
     e.preventDefault()
     return false;
-})*/
+})
 /*
 $AC或AlloyClip 构造方法 初始化AlloyClip对象
 new $AC(String Selector, Number width, Number height, Number Style, Array border-img-src);
@@ -25,17 +25,11 @@ new $AC("#_clip_", 800, 800, 0, [
     "images/border/border2.png"
 ]).ok(function (base64, aiObj) {
     $('#_clip_').hide()
-    $('#addDecorate').show();
+    //$('#addDecorate').show();
     
-    fabric.Image.fromURL(base64, function (img) {
-        canvas.add(img);
-        canvas.centerObject(img);
-        img.setCoords();
-        canvas.setActiveObject(img);
-        canvas.renderAll();
-    })
-    /*var image = $('#imagedit');
-    image.append('<img src="' + base64 + '">');
+
+    var image = $('#addDecorate');
+    image.html('<img src="' + base64 + '">');
     image.children('img')[0].onload = function () {
         if (this) {
             $(this).imageEdit({
@@ -47,8 +41,8 @@ new $AC("#_clip_", 800, 800, 0, [
                     //console.log(src);
                     var oA = document.createElement('a');
                     oA.href = src;
-                    oA.download = '111.png';
-                    
+                    oA.download = 'download.png';
+
                     var event = document.createEvent('MouseEvents');
                     event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
                     oA.dispatchEvent(event);
@@ -58,5 +52,4 @@ new $AC("#_clip_", 800, 800, 0, [
             });
         }
     }
-    aiObj.saveFile("AlloyCliped.jpg", 0.8);*/
 });

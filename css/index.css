@@ -1,7 +1,9 @@
 * {
     box-sizing: border-box;
 }
-
+html,body{
+    height: 100%;
+}
 body {
     padding: 0px;
     margin: 0px;
@@ -355,7 +357,7 @@ span.crop_icon {
 #_clip_{
     width: 1000px;
     height: 600px;
-    margin: 50px auto 0;
+    margin: 20px auto 0;
 }
 #_clip_ li{
     width: auto;
