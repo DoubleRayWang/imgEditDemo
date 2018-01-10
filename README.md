@@ -61,3 +61,6 @@
     
     
 5. 增加压缩构建，增加css兼容性及js体积。具体见 /gulpfile.js
+
+
+运行项目： 项目根目录下打开terminal  输入 gulp default

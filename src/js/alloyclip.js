@@ -1001,20 +1001,20 @@
             var _this = this;
             return this.rect || function () {
                 var el = createEl("div", _this.left, "AlloyClipRect");
-                el.style.width = _this.defaultWidth / 4 + "px";
-                el.style.height = _this.defaultHeight / 4 + "px";
+                el.style.width = _this.defaultWidth / 5 + "px";
+                el.style.height = _this.defaultHeight / 5 + "px";
                 
                 var bgImgWrapper = createEl("div", el, "AlloyBgImgWrapper");
                 var bgImg = createEl("img", bgImgWrapper, "AlloyBgImg");
                 
                 //居中框
                 var centerRect = function () {
-                    el.style.width = _this.defaultWidth / 4 + "px";
-                    el.style.height = _this.defaultHeight / 4 + "px";
+                    el.style.width = _this.defaultWidth / 5 + "px";
+                    el.style.height = _this.defaultHeight / 5 + "px";
                     var parentWidth = _this.left.offsetWidth;
                     var parentHeight = _this.left.offsetHeight;
-                    var elLeft = ~~((parentWidth - _this.defaultWidth / 4) / 2) + "px";
-                    var elTop = ~~((parentHeight - _this.defaultHeight / 4) / 2) + "px";
+                    var elLeft = ~~((parentWidth - _this.defaultWidth / 5) / 2) + "px";
+                    var elTop = ~~((parentHeight - _this.defaultHeight / 5) / 2) + "px";
                     el.style.left = elLeft;
                     el.style.top = elTop;
                 };
