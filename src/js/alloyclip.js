@@ -358,12 +358,18 @@
         //用于居中定位
         var buttonTop = createEl("div", left, "AlloyClipButtonTop");
         var button = createEl("div", left, "AlloyClipButton");
+        var __tip = createEl("div", left, "AlloyCliptip");
         var canvasWrapper = createEl("div", left, "AlloyCanvasWrapper");
         var buttonBottom = createEl("div", left, "AlloyClipButtonTop");
         
         var mask = createEl("div", left, "AlloyClipMask");
         
         button.innerHTML = '<i class="fa fa-upload" aria-hidden="true"></i> 上传图片';
+        __tip.innerHTML = '<p>选择图片 → 裁剪 → 加边框及色域调节 → 加文字及其他素材 → 下载保存</p>';
+        $(__tip).css({
+            paddingTop:'20px',
+            color:'#333'
+        })
         canvasWrapper.id = "AlloyCanvasWrapper";
         canvasWrapper.style.display = "none";
         
@@ -408,6 +414,7 @@
         
         this.hideUploadBox = function () {
             button.style.display = "none";
+            __tip.style.display = "none";
         };
         
         this.showCanvas = function (el) {
