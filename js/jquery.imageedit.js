@@ -10,7 +10,7 @@ var canvas, selectedObj, settings, coords, filename, controls, shape_controls, d
         overlays: [],
         fontSize: 20,
         font: 'Helvetica',
-        text: 'Enter text here',
+        text: '输入文字',
         controlsColor: 'blue',
         borderColor: 'blue',
         drawStrokeColor: 'rgb(255,20,20)',
@@ -32,68 +32,207 @@ var canvas, selectedObj, settings, coords, filename, controls, shape_controls, d
     var fonts = ["Aclonica", "Acme", "Akronim", "Aladin", "Alegreya", "Allerta", "Allura", "Amita", "Arbutus", "Architects Daughter", "Archivo Black", "Atomic Age", "Aubrey", "Bangers", "Basic", "Baumans", "Belleza", "BenchNine", "Berkshire Swash", "Bigshot One", "Bilbo", "Butcherman", "Caesar Dressing", "Cambo", "Candal", "Capriola", "Carrois Gothic", "Carter One", "Caveat Brush", "Cherry Cream Soda", "Codystar", "Convergence", "Covered By Your Grace", "Croissant One", "Crushed", "Days One", "Devonshire", "Dhurjati", "Diplomata", "Droid Sans Mono", "Duru Sans", "Engagement", "Englebert", "Ewert", "Faster One", "Griffy", "Helvetica", "Iceberg", "Jacques Francois", "Lato", "Londrina Outline", "Marko One", "Marvel", "Monoton", "Mrs Sheppards", "Mystery Quest", "Nosifer", "Nova Cut", "Open Sans", "Oregano", "Oswald", "Oxygen Mono", "Press Start 2P", "Quicksand", "Ribeye", "Roboto", "Rosario", "Russo One", "Shojumaru", "Source Code Pro", "Swanky and Moo Moo", "The Girl Next Door", "Ubuntu", "UnifrakturMaguntia", "Voces", "Zeyada"];
     var properties = {
         'default': {
-            'angle': 'number',
-            'backgroundColor': 'color',
-            'fill': 'color',
-            'flipX': 'checkbox',
-            'flipY': 'checkbox',
-            'globalCompositeOperation': ['source-over', 'source-atop', 'source-in', 'source-out', 'destination-over', 'destination-atop', 'destination-in', 'destination-out', 'lighter', 'copy', 'xor'],
-            'height': 'number',
-            'left': 'number',
-            'opacity': 'range',
-            'originX': ['left', 'center', 'right'],
-            'originY': ['top', 'center', 'bottom'],
-            'skewX': 'number',
-            'skewY': 'number',
-            'stroke': 'color',
-            'strokeDashArray': [],
-            'strokeLineCap': ['round', 'butt', 'square'],
-            'strokeLineJoin': ['round', 'bevel', 'miter'],
-            'strokeMiterLimit': 'number',
-            'strokeWidth': 'number',
-            'top': 'number',
-            'visible': 'checkbox',
-            'width': 'number'
+            'angle': {
+                name: '角度',
+                type: 'number'
+            },
+            'backgroundColor': {
+                name: '背景色',
+                type: 'color'
+            },
+            'fill': {
+                name: '填充色',
+                type: 'color'
+            },
+            'flipX': {
+                name: '水平镜像',
+                type: 'checkbox'
+            },
+            'flipY': {
+                name: '垂直镜像',
+                type: 'checkbox'
+            },
+            'globalCompositeOperation': {
+                name: '全局组合操作',
+                type: ['source-over', 'source-atop', 'source-in', 'source-out', 'destination-over', 'destination-atop', 'destination-in', 'destination-out', 'lighter', 'copy', 'xor']
+            },
+            'height': {
+                name: '高度',
+                type: 'number'
+            },
+            'left': {
+                name: '左偏移',
+                type: 'number'
+            },
+            'skewX': {
+                name: '向右倾斜',
+                type: 'number'
+            },
+            'skewY': {
+                name: '向下倾斜',
+                type: 'number'
+            },
+            'opacity': {
+                name: '透明度',
+                type: 'range'
+            },
+            'originX': {
+                name: '水平偏移',
+                type: ['left', 'center', 'right']
+            },
+            'originY': {
+                name: "垂直偏移",
+                type: ['top', 'center', 'bottom']
+            },
+            'stroke': {
+                name: '笔触颜色',
+                type: 'color'
+            },
+            'strokeDashArray': {
+                name: '短划线和间隙',
+                type: []
+            },
+            'strokeLineCap': {
+                name: '饰线边缘修饰',
+                type: ['round', 'butt', 'square']
+            },
+            'strokeLineJoin': {
+                name: '饰线转弯修饰',
+                type: ['round', 'bevel', 'miter']
+            },
+            'strokeMiterLimit': {
+                name: '斜角接缝的限制以及斜角接缝装饰',
+                type: 'number'
+            },
+            'strokeWidth': {
+                name: '线的宽度',
+                type: 'number'
+            },
+            'top': {
+                name: '下偏移',
+                type: 'number'
+            },
+            'visible': {
+                name: '可见（隐藏）',
+                type: 'checkbox'
+            },
+            'width': {
+                name: '宽度',
+                type: 'number'
+            }
         },
         'i-text': {
-            'fontFamily': fonts,
-            'fontSize': 'number',
-            'fontStyle': ['normal', 'italic', 'oblique'],
-            'fontWeight': ['normal', 'bold', '400', '600', '800'],
-            'lineHeight': 'number',
-            'text': 'text',
-            'textAlign': ['left', 'center', 'right', 'justify'],
-            'textBackgroundColor': 'color',
-            'textDecoration': ['', 'underline', 'overline', 'line-through']
+            'fontFamily': {
+                name: '文本字体',
+                type: fonts
+            },
+            'fontSize': {
+                name: '文本字号',
+                type: 'number'
+            },
+            'fontStyle': {
+                name: '文本字体样式',
+                type: ['normal', 'italic', 'oblique']
+            },
+            'fontWeight': {
+                name: '文本字体加粗',
+                type: ['normal', 'bold', '400', '600', '900']
+            },
+            'lineHeight': {
+                name: '文本行高',
+                type: 'number'
+            },
+            'text': {
+                name: '文本内容',
+                type: 'text'
+            },
+            'textAlign': {
+                name: '文本对齐方式',
+                type: ['left', 'center', 'right', 'justify']
+            },
+            'textBackgroundColor': {
+                name: '文本背景色',
+                type: 'color'
+            },
+            'textDecoration': {
+                name: '文本线',
+                type: ['', 'underline', 'overline', 'line-through']
+            }
         },
         'image': {
-            'alignX': ['none', 'mid', 'min', 'max'],
-            'alignY': ['none', 'mid', 'min', 'max'],
-            'crossOrigin': ['', 'Anonymous', 'use-credentials'],
-            'meetOrSlice': ['meet', 'slice'],
-            'src': 'string'
+            'alignX': {
+                name: '图像 alignX',
+                type: ['none', 'mid', 'min', 'max']
+            },
+            'alignY': {
+                name: '图像 alignY',
+                type: ['none', 'mid', 'min', 'max']
+            },
+            'crossOrigin': {
+                name: '图像 crossOrigin',
+                type: ['', 'anonymous', 'use-credentials']
+            },
+            'meetOrSlice': {
+                name: '图像 meetOrSlice',
+                type: ['meet', 'slice']
+            },
+            'src': {
+                name: '图像路径',
+                type: 'string'
+            }
         }
     };
     controls = {
-        'text': 'fa-pencil-square-o',
+        'text': {
+            name: '文字',
+            icon: 'fa-pencil-square-o'
+        },
         //'draw':'fa-pencil',
-        'shape': 'fa-square-o',
+        'shape': {
+            name: '图形',
+            icon: 'fa-square-o'
+        },
+        'overlays': {
+            name: '图像',
+            icon: 'fa-file-image-o'
+        },
         //'crop':'fa-crop',
-        'measure': 'fa-expand',
-        'save': 'fa-download'
+        'measure': {
+            name: '测量',
+            icon: 'fa-expand'
+        },
+        'save': {
+            name: '保存',
+            icon: 'fa-download'
+        }
     };
     shape_controls = {
-        'arrow': 'fa-long-arrow-right',
-        'double sided arrow': 'fa-arrows-h',
-        'line': 'fa-minus',
-        'rectangle': 'fa-square-o',
-        'circle': 'fa-circle-thin'
+        'arrow': {
+            name: '箭头',
+            icon: 'fa-long-arrow-right'
+        },
+        'double sided arrow': {
+            name: '双箭头',
+            icon: 'fa-arrows-h'
+        },
+        'line': {
+            name: '线',
+            icon: 'fa-minus'
+        },
+        'rectangle': {
+            name: '矩形',
+            icon: 'fa-square-o'
+        },
+        'circle': {
+            name: '圆形',
+            icon: 'fa-circle-thin'
+        }
     };
     // var canvas, selectedObj;
     $.fn.imageEdit = function (options) {
         selector = this;
         if (!$(selector).is("img")) {
-            console.error("This plugin works for images only!");
+            alert("只能编辑图片！");
             return false;
         }
         if (typeof options != 'object') {
@@ -102,7 +241,7 @@ var canvas, selectedObj, settings, coords, filename, controls, shape_controls, d
         }
 
         if (options.overlays && options.overlays.length > 0) {
-            controls['overlays'] = 'fa-file-image-o';
+            //controls['overlays'] = 'fa-file-image-o';
             setOverlaysImgs(options, 0);
         }
         //插入主容器
@@ -111,20 +250,20 @@ var canvas, selectedObj, settings, coords, filename, controls, shape_controls, d
         $("<div />", {"id": "IEcontrols"}).appendTo($("#IEcontainer"));
         for (var i in controls) {
             var $div = $('<div />', {'class': 'IEcontrol_icons ' + i, 'data-control-type': i})
-            $div.append($('<i />', {'class': 'fa ' + controls[i], 'aria-hidden': true}));
-            $div.append($('<span />').text(i.toUpperCase()));
+            $div.append($('<i />', {'class': 'fa ' + controls[i].icon, 'aria-hidden': true}));
+            $div.append($('<span />').text(controls[i].name));
             $div.appendTo($("#IEcontrols"));
         }
         $("<div />", {"id": "IEshape_controls"}).appendTo($("#IEcontainer"));
         for (var i in shape_controls) {
             var $div = $('<div />', {'class': 'IEcontrol_icons ' + i, 'data-control-type': i})
-            $div.append($('<i />', {'class': 'fa ' + shape_controls[i], 'aria-hidden': true}));
+            $div.append($('<i />', {'class': 'fa ' + shape_controls[i].icon, 'aria-hidden': true}));
             /*if(i == 'double sided arrow'){
                 $div.append($('<span />',{'style':'font-size:10px;'}).text(i.toUpperCase()));
             } else {
                 $div.append($('<span />').text(i.toUpperCase()));
             }*/
-            $div.append($('<span />').text(i.toUpperCase()));
+            $div.append($('<span />').text(shape_controls[i].name));
             $div.appendTo($("#IEshape_controls"));
         }
         /*if(shape_controls['overlays']){
@@ -278,7 +417,7 @@ var canvas, selectedObj, settings, coords, filename, controls, shape_controls, d
         $('<div id="IEcoords_div"><div><textarea id="IEpoints"></textarea><i></i></div></div>').appendTo($("#IEcontainer"));
         $("<div />", {"id": "IEsettings"}).appendTo($("#IEcontainer"));
         $("#IEsettings").append($("<input type='range' id='IEscale' class='range-slider__range' min='0.1' step='0.01' />"))
-        $("#IEsettings").append($("<div id='IEclose_icon'><i class='fa fa-sign-out' aria-hidden='true'></i></div>"))
+        $("#IEsettings").append($("<div id='IEclose_icon' title='退出'><i class='fa fa-sign-out' aria-hidden='true'></i></div>"))
         $("<div />", {"id": "IEmeasure_popup"}).appendTo($("#IEcontainer"));
         $('<div />', {"id": "IEmessage"}).appendTo($("#IEcontainer"));
         $("#IEcontainer").append($("<div />", {"id": "IEloader"}));
@@ -299,16 +438,28 @@ var canvas, selectedObj, settings, coords, filename, controls, shape_controls, d
         })
         // $("#IEloader").append($('<i />'));
         // $("#IEloader").html('<div class="blockG" id="rotateG_01"></div><div class="blockG" id="rotateG_02"></div><div class="blockG" id="rotateG_03"></div><div class="blockG" id="rotateG_04"></div><div class="blockG" id="rotateG_05"></div><div class="blockG" id="rotateG_06"></div><div class="blockG" id="rotateG_07"></div><div class="blockG" id="rotateG_08"></div>');
-        var measure_props = ["Real Distance", "Ratio", "Calculated Area", "Calculated Distance"];
+        var measure_props = [{
+            name: '实际距离',
+            type: "Real Distance"
+        }, {
+            name: '比例',
+            type: "Ratio"
+        }, {
+            name: '计算面积',
+            type: "Calculated Area"
+        }, {
+            name: '计算距离',
+            type: "Calculated Distance"
+        }];
         var $div = $('<div />', {'class': 'IEmeasure_popup_head'});
-        $div.append($('<span />').text('Measure properties'));
+        $div.append($('<span />').text('测量属性'));
         $("#IEmeasure_popup").append($div);
         measure_props.forEach(function (a) {
             var $div = $('<div />', {'class': 'IEmeasure_popup_opts'});
-            $div.append($('<span />').text(a));
+            $div.append($('<span />').text(a.name));
             var id = '';
             var isDisabled = false;
-            switch (a) {
+            switch (a.type) {
                 case 'Real Distance':
                     id = 'IEreal_distance';
                     break;
@@ -325,12 +476,17 @@ var canvas, selectedObj, settings, coords, filename, controls, shape_controls, d
                     isDisabled = true;
                     break;
             }
-            $div.append($('<input />', {'type': 'text', 'data-measure_prop': a, 'id': id, 'disabled': isDisabled}));
+            $div.append($('<input />', {
+                'type': 'text',
+                'data-measure_prop': a.type,
+                'id': id,
+                'disabled': isDisabled
+            }));
             $("#IEmeasure_popup").append($div);
         })
         var $div = $('<div />', {'class': 'IEmeasure_popup_opts'});
-        $div.append($('<button />', {'type': 'button', 'class': 'IEclear_measure'}).text("Clear"));
-        $div.append($('<button />', {'type': 'button', 'class': 'IEclose_measure'}).text("Close"));
+        $div.append($('<button />', {'type': 'button', 'class': 'IEclear_measure'}).text("清除"));
+        $div.append($('<button />', {'type': 'button', 'class': 'IEclose_measure'}).text("关闭"));
         $("#IEmeasure_popup").append($div);
         $("#IEmeasure_popup").css("transform", "translate3d(20px," + (innerHeight - 270) + "px,0)");
         if (options.show_props) {
@@ -724,7 +880,7 @@ var canvas, selectedObj, settings, coords, filename, controls, shape_controls, d
     }
     var deleteSelectedObj = function () {
         var activeObject = canvas.getActiveObject(), activeGroup = canvas.getActiveGroup();
-        if (!activeObject.mainImage && confirm("Are you sure you want to remove this element?")) {
+        if (!activeObject.mainImage && confirm("确定要删除此元素？")) {
             if (activeGroup) {
                 var objectsInGroup = activeGroup.getObjects();
                 canvas.discardActiveGroup();
@@ -737,10 +893,12 @@ var canvas, selectedObj, settings, coords, filename, controls, shape_controls, d
         }
     }
     var closeEditor = function () {
-        canvas.dispose();
-        closeMeasure();
-        $("#IEcontainer").remove();
-        $('#_clip_').show();
+        if (confirm("退出后将不会保留任何更改，是否退出？")){
+            canvas.dispose();
+            closeMeasure();
+            $("#IEcontainer").remove();
+            $('#_clip_').show();
+        }
     }
     var addText = function () {
         var text = settings.text;
@@ -768,28 +926,28 @@ var canvas, selectedObj, settings, coords, filename, controls, shape_controls, d
             var parentEl = $('<div />', {'class': i});
             var props = properties[i];
             for (var j in props) {
-                var val = props[j];
-                var j_title = j.toLowerCase();
+                var val = props[j].type;
+                //var j_title = j.toLowerCase();
                 switch (val) {
                     case 'number':
-                        parentEl.append($('<div class="searchable" title="' + j_title + '"><span>' + j + '</span><input type="number" title="' + j + '" min="0" /></div>'));
+                        parentEl.append($('<div class="searchable" title="' + props[j].name + '"><span>' + props[j].name + '</span><input type="number" title="' + j + '" min="0" /></div>'));
                         break;
                     case 'text':
-                        parentEl.append($('<div class="searchable" title="' + j_title + '"><span>' + j + '</span><input type="text" title="' + j + '" /></div>'));
+                        parentEl.append($('<div class="searchable" title="' + props[j].name + '"><span>' + props[j].name + '</span><input type="text" title="' + j + '" /></div>'));
                         break;
                     case 'checkbox':
-                        parentEl.append($('<div class="searchable" title="' + j_title + '"><span>' + j + '</span><input type="checkbox" title="' + j + '" /></div>'));
+                        parentEl.append($('<div class="searchable" title="' + props[j].name + '"><span>' + props[j].name + '</span><input type="checkbox" title="' + j + '" /></div>'));
                         break;
                     case 'range':
-                        parentEl.append($('<div class="searchable" title="' + j_title + '"><span>' + j + '</span><input type="range" title="' + j + '" min="0" step="0.01" max="1" value="1" /></div>'));
+                        parentEl.append($('<div class="searchable" title="' + props[j].name + '"><span>' + props[j].name + '</span><input type="range" title="' + j + '" min="0" step="0.01" max="1" value="1" /></div>'));
                         break;
                     case 'color':
-                        parentEl.append($('<div class="searchable" title="' + j_title + '"><span>' + j + '</span><input type="color" title="' + j + '" /></div>'));
+                        parentEl.append($('<div class="searchable" title="' + props[j].name + '"><span>' + props[j].name + '</span><input type="color" title="' + j + '" /></div>'));
                         break;
                     default:
                         if (typeof(val) == 'object' && val.length > 0) {
-                            var subParentEl = $('<div />', {'class': 'searchable', 'title': j});
-                            subParentEl.append($('<span />').text(j));
+                            var subParentEl = $('<div />', {'class': 'searchable', 'title': props[j].name});
+                            subParentEl.append($('<span />').text(props[j].name));
                             var selectEl = $('<select />', {'title': j});
                             for (var el in val) {
                                 selectEl.append($('<option />', {'value': val[el]}).text(val[el]));
@@ -802,7 +960,7 @@ var canvas, selectedObj, settings, coords, filename, controls, shape_controls, d
             }
             mainPropEl.append(parentEl);
         }
-        $("#IEproperties_dialogs").append('<div id="prop_head"><span>Properties</span><input type="search" id="search_el" placeholder="Search properties" /></div>');
+        $("#IEproperties_dialogs").append('<div id="prop_head"><span>属性编辑</span><input type="search" id="search_el" placeholder="查找属性" /></div>');
         $("#IEproperties_dialogs").append(mainPropEl);
         setTimeout(function () {
             if (typeof callback == 'function') {
@@ -828,6 +986,7 @@ var canvas, selectedObj, settings, coords, filename, controls, shape_controls, d
         if (idx == 0) {
             settings.overlayImgs = [];
         }
+
         if (opts.overlays[idx]) {
             var img = new Image();
             img.onload = function () {
@@ -840,6 +999,12 @@ var canvas, selectedObj, settings, coords, filename, controls, shape_controls, d
             $('<div />', {'id': 'IEoverlays'}).appendTo($('.overlays'));
             $('<div />', {'class': 'IEtriangle'}).appendTo($('#IEoverlays'));
             $('<div />', {'id': 'IEoverlay_box'}).appendTo($('#IEoverlays'));
+            $('<button />', {'id': 'IEimgUpload'}).appendTo($('#IEoverlays'));
+            $('#IEimgUpload').html('<i class="fa fa-upload" aria-hidden="true"></i> 自定义上传')
+                .addClass('IEimgUploadButton')
+                .on('click',function () {
+                $("#image_file").trigger('click');
+            })
             settings.overlayImgs.forEach(function (img) {
                 $(img).appendTo($('#IEoverlay_box'));
             });
@@ -850,6 +1015,7 @@ var canvas, selectedObj, settings, coords, filename, controls, shape_controls, d
                 });
             })
         }
+
     }
 
     function showOverlays() {
@@ -1304,6 +1470,25 @@ var canvas, selectedObj, settings, coords, filename, controls, shape_controls, d
         })
     }
     $(_window).on("resize", resetSize);
+    /*刷新及退出时的提示*/
+    window.onbeforeunload = function(){
+        if(canvas.toObject().objects.length > 0){
+            return true;
+        }
+    }
 
-
+    $("#image_file").on("change",function(e){
+        var file = e.target.files[0];
+        var reader = new FileReader();
+        reader.onloadend = function(){
+            fabric.Image.fromURL(this.result,function(img){
+                canvas.add(img);
+                canvas.centerObject(img);
+                img.setCoords();
+                canvas.setActiveObject(img);
+                canvas.renderAll();
+            })
+        }
+        reader.readAsDataURL(file);
+    });
 })(jQuery, window);

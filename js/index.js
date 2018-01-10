@@ -1,5 +1,5 @@
 //禁止右键菜单
-$('#_clip_').on('contextmenu',function (e) {
+$('#_clip_').on('contextmenu', function (e) {
     e.preventDefault()
     return false;
 })
@@ -26,22 +26,30 @@ new $AC("#_clip_", 800, 800, 0, [
 ]).ok(function (base64, aiObj) {
     $('#_clip_').hide()
     //$('#addDecorate').show();
-    
+
 
     var image = $('#addDecorate');
     image.html('<img src="' + base64 + '">');
     image.children('img')[0].onload = function () {
         if (this) {
             $(this).imageEdit({
-                maxScale: 3,
+                maxScale: 2,
                 onReady: function () {
                     console.log("image loaded");
                 },
                 onSave: function (src) {
                     //console.log(src);
+                    var name = prompt('输入文件名字后开始下载...', 'download');
+                    if (name === null){
+                        return;
+                    }
                     var oA = document.createElement('a');
                     oA.href = src;
-                    oA.download = 'download.png';
+                    if (name === '') {
+                        name = 'download'
+                    }
+                    name += '.png'
+                    oA.download = name;
 
                     var event = document.createEvent('MouseEvents');
                     event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);

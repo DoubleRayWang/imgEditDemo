@@ -382,7 +382,7 @@
         confirmButton.onclick = function () {
             var eventQueue = _this.eventPool['ok'] || [];
             var data = _this.psedAIPic.save();
-            
+
             for (var i = 0; i < eventQueue.length; i++) {
                 eventQueue[i](data, _this.psedAIPic);
             }
@@ -511,7 +511,7 @@
             };
             
             //监听mousemove的动作
-            Utils.addEvent(window, this.left, "mousemove", function (e) {
+            Utils.addEvent(_this.el, this.left, "mousemove", function (e) {
                 var dx, dy;
                 if (clickFlag) {
                     dx = e.pageX - currPageX;
@@ -531,7 +531,7 @@
                 }
             });
             
-            window.addEventListener("mouseup", function (e) {
+            _this.el.addEventListener("mouseup", function (e) {
                 clickFlag = 0;
             });
             
@@ -882,7 +882,7 @@
             var _this = this;
             var scrollMouseDown = 0;
             
-            var originX = 0, originY = 0, originLeft = 0;
+            var originX = 0, originY = 0, originLeft = 0,
             originTop = 0;
             
             var width = width || 160;
@@ -893,7 +893,7 @@
             
             var originImg;
             
-            document.body.addEventListener("mousedown", function (e) {
+            _this.el.addEventListener("mousedown", function (e) {
                 var target = e.target;
                 if (target.className == "apBarScrollEl") {
                     var uid = target.getAttribute('data-uid');
@@ -916,7 +916,7 @@
                 e.preventDefault();
             }, false);
             
-            document.body.addEventListener("mouseup", function (e) {
+            _this.el.addEventListener("mouseup", function (e) {
                 if (scrollMouseDown) {
                     var id = scrollEl.id;
                     var currImg = _this.currLayer.clone();
@@ -961,7 +961,7 @@
             }, false);
             
             
-            document.body.addEventListener("mousemove", function (e) {
+            _this.el.addEventListener("mousemove", function (e) {
                 var targetEl = e.target;
                 if (scrollMouseDown) {
                     var x = e.pageX;
@@ -1072,6 +1072,7 @@
                 
                 //检查是否到边界了
                 var checkBound = function (left, top, w, h) {
+                    var _left,_top;
                     if (left != undefined) {
                         _left = left;
                     } else {
@@ -1310,7 +1311,7 @@
                 
                 //如果非fixed则监听选取框的运动
                 if (!_this.setting.isFixed) {
-                    Utils.addEvent(window, el, "mousedown", function (e) {
+                    Utils.addEvent(_this.el, el, "mousedown", function (e) {
                         rectClickFlag = 1;
                         
                         currPageX = e.pageX;
@@ -1357,10 +1358,9 @@
                             };
                         }(i));
                     }
-                } else {
                 }
                 
-                window.addEventListener("mousemove", function (e) {
+                _this.el.addEventListener("mousemove", function (e) {
                     var x = e.pageX;
                     var y = e.pageY;
                     if (controlClickFlag) {
@@ -1444,7 +1444,7 @@
                     
                 });
                 
-                window.addEventListener("mouseup", function (e) {
+                _this.el.addEventListener("mouseup", function (e) {
                     if (controlClickFlag || rectClickFlag) _this.showClipPic();
                     controlClickFlag = 0;
                     rectClickFlag = 0;

@@ -1,12 +1,20 @@
-Array.prototype.del = function (e) {
-    if (!e){
-        return;
+Object.defineProperty(
+    Array.prototype,"del",{
+        set: function (e) {},
+        get: function () {
+            return function(e)
+            {
+                e.sort(function (e, t) {return e - t;});
+                var t = this.concat([]);
+                for (var n = e.length - 1; n >= 0; n--)
+                    t = t.slice(0, e[n]).concat(t.slice(e[n] + 1));
+                return t;
+            }
+        },
+        enumerable: false,
+        configurable: false
     }
-    e.sort();
-    var t = this.concat([]);
-    for (var n = e.length - 1; n >= 0; n--) t = t.slice(0, e[n]).concat(t.slice(e[n] + 1));
-    return t
-};
+);
 try {
     HTMLImageElement.prototype.loadOnce = function (e) {
         var t = 0;

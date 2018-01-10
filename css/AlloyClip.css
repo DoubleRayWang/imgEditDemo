@@ -57,7 +57,7 @@
     box-shadow: 0 0 3px 0 rgb(125, 125, 125);
 }
 
-.AlloyClipButton {
+.AlloyClipButton,.IEimgUploadButton {
     position: relative;
     display: inline-block;
     vertical-align: middle;
@@ -79,7 +79,7 @@
     color: #fff;
 }
 
-.AlloyClipButton:before {
+.AlloyClipButton:before,.IEimgUploadButton:before {
     content: "";
     position: absolute;
     z-index: -1;
@@ -100,11 +100,11 @@
     transition-timing-function: ease-out;
 }
 
-.AlloyClipButton:hover {
+.AlloyClipButton:hover,.IEimgUploadButton:hover {
     color: white;
 }
 
-.AlloyClipButton:hover:before {
+.AlloyClipButton:hover:before,.IEimgUploadButton:hover:before {
     -webkit-transform: scaleX(1);
     transform: scaleX(1);
 }
