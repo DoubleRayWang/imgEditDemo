@@ -1550,8 +1550,13 @@ var canvas, selectedObj, settings, coords, filename, controls, shape_controls, d
                         event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
                         oA.dispatchEvent(event);
                     },
-                    overlays: ['dist/images/clips/house.png', 'dist/images/clips/home.png', 'dist/images/clips/cape_house.png', 'dist/images/clips/landscape.png'],
-                    show_props: true
+                    overlays: [
+                        'dist/images/clips/house.png',
+                        'dist/images/clips/home.png',
+                        'dist/images/clips/cape_house.png',
+                        'dist/images/clips/landscape.png'
+                    ],//常用素材
+                    show_props: true    //展示属性编辑
                 });
             }
         }
