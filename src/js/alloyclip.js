@@ -698,7 +698,22 @@
                     //清空原来所有的dom
                     optionPreviewWrapper.innerHTML = "";
                     var ul = createEl("ul", optionPreviewWrapper, "AlloyClipFilter");
-                    var effects = ["sketch", "lomo", "soften", "softenFace", "purpleStyle", "vintage", "warmAutumn", "rough", "softEnhancement"];
+                    var effects = [
+                        "sketch",
+                        "lomo",
+                        "soften",
+                        "softenFace",
+                        "purpleStyle",
+                        "vintage",
+                        "warmAutumn",
+                        "rough",
+                        "softEnhancement",
+                        "gray",
+                        "strongEnhancement",
+                        "strongGray",
+                        "lightGray"
+                        //"carveStyle"
+                    ];
                     
                     //缩略图默认大小
                     var preveiwHeight = optionPreviewWrapper.offsetHeight;
@@ -739,17 +754,17 @@
                     optionPreviewWrapper.innerHTML = "";
                     var ul = createEl("ul", optionPreviewWrapper, "AlloyClipFilter AlloyClipBorder");
                     var effects = _this.BORder;
-                    
-                    //缩略图默认大小
-                    var miniHeight = 50;
-                    
+
+                    var preveiwHeight = optionPreviewWrapper.offsetHeight;
+                    var miniHeight = preveiwHeight * 0.7;
+
+                    ul.style.paddingTop = ~~(preveiwHeight * 0.15) + "px";
+
                     //得到一个小的缩略图
                     var cHeight = _this.currLayer.width;
                     var cWidth = _this.currLayer.height;
-                    
                     var scaleSize = miniHeight / cHeight;
-                    
-                    var miniLayer = _this.currLayer.clone().scaleTo(null, miniHeight);
+                    var miniLayer = _this.currLayer.clone().scale(scaleSize);
                     
                     for (var i = 0; i < effects.length; i++) {
                         var effect = effects[i];
@@ -1001,20 +1016,20 @@
             var _this = this;
             return this.rect || function () {
                 var el = createEl("div", _this.left, "AlloyClipRect");
-                el.style.width = _this.defaultWidth / 5 + "px";
-                el.style.height = _this.defaultHeight / 5 + "px";
+                el.style.width = _this.defaultWidth / 2.5 + "px";
+                el.style.height = _this.defaultHeight / 2.5 + "px";
                 
                 var bgImgWrapper = createEl("div", el, "AlloyBgImgWrapper");
                 var bgImg = createEl("img", bgImgWrapper, "AlloyBgImg");
                 
                 //居中框
                 var centerRect = function () {
-                    el.style.width = _this.defaultWidth / 5 + "px";
-                    el.style.height = _this.defaultHeight / 5 + "px";
+                    el.style.width = _this.defaultWidth / 2.5 + "px";
+                    el.style.height = _this.defaultHeight / 2.5 + "px";
                     var parentWidth = _this.left.offsetWidth;
                     var parentHeight = _this.left.offsetHeight;
-                    var elLeft = ~~((parentWidth - _this.defaultWidth / 5) / 2) + "px";
-                    var elTop = ~~((parentHeight - _this.defaultHeight / 5) / 2) + "px";
+                    var elLeft = ~~((parentWidth - _this.defaultWidth / 2.5) / 2) + "px";
+                    var elTop = ~~((parentHeight - _this.defaultHeight / 2.5) / 2) + "px";
                     el.style.left = elLeft;
                     el.style.top = elTop;
                 };

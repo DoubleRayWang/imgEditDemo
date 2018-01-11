@@ -29,7 +29,7 @@ try {
     function r() {
         this.readyState && (this.readyState = 0, this.dorsyWorker.startWorker())
     }
-    
+
     var t = function () {
         if (window.navigator) {
             var e = window.navigator.userAgent;
@@ -49,7 +49,7 @@ try {
                 }
                 e[o] ? s(e[o]) : s(e[o] = {})
             }
-            
+
             var n = [e];
             /\./g.test(e) && (n = e.split("."));
             var r = -1, i = this;
@@ -149,30 +149,55 @@ try {
             var i = [];
             return i = Array.prototype.slice.call(arguments, 1), this.useWorker ? (this.dorsyWorker.queue.push(["act", e, i]), r.call(this)) : n.reflect(e, this.imgData, i), this
         }, view: function (e, t, n, r, i) {
-            var s = this.clone();
-            return s.type = 1, this.addLayer(s, "\u6b63\u5e38", 0, 0), s.act(e, t, n, r, i), this
+            if (!e) this.cancel(); else {
+                var s = this.layers.length;
+                this.layers[s - 1] && this.layers[s - 1][0].type === 1 && this.cancel();
+                var o;
+                for (var u = this.layers.length - 1; u > -1; u--) {
+                    var a = this.layers[u];
+                    if (a[0].type === 2) {
+                        o = a[0].clone();
+                        break
+                    }
+                }
+                o || (o = this.clone(), window.newLayer = o), e === "ps" ? o = o.ps(t, n, r, i) : o.act(e, t, n, r, i), o.type = 1, this.addLayer(o, "\u6b63\u5e38", 0, 0)
+            }
+            return this
+        }, doView: function () {
+            var e = this.layers.length;
+            return this.layers[e - 1] && this.layers[e - 1][0].type === 2 ? this : (this.layers[e - 1] && this.layers[e - 1][0].type === 1 && (this.layers[e - 1][0].type = 2), this)
+        }, undoView: function () {
+            this.cancel();
+            for (var e = this.layers.length - 1; e > -1; e--) {
+                var t = this.layers[e];
+                if (t[0].type === 2) {
+                    t[0].type = 1;
+                    break
+                }
+            }
+            return this
         }, excute: function () {
             var e = this.layers, t = e.length;
-            e[t - 1] && e[t - 1][0].type == 1 && (this.imgData = e[t - 1][0].imgData, delete e[t - 1])
+            return e[t - 1] && e[t - 1][0].type == 1 && (this.imgData = e[t - 1][0].imgData, delete e[t - 1]), this
         }, cancel: function () {
             var e = this.layers, t = e.length;
-            e[t - 1] && e[t - 1][0].type == 1 && delete e[t - 1]
-        }, show: function (t, n, r) {
-            if (!r && this.useWorker) return this.dorsyWorker.queue.push(["show", t, n]), this;
+            return e[t - 1] && e[t - 1][0].type == 1 && e.pop(), this
+        }, complileLayers: function (t) {
             if (this.layers.length == 0) this.tempPsLib = {imgData: this.imgData}; else {
-                var i = new window[e](this.canvas.width, this.canvas.height);
-                i.add(this, "\u6b63\u5e38", 0, 0, n), this.tempPsLib = i;
-                for (var s = 0; s < this.layers.length; s++) {
-                    var o = this.layers[s], u = o[0].layers, a = o[0];
-                    u[u.length - 1] && u[u.length - 1][0].type == 1 && (a = u[u.length - 1][0]), i.add(a, o[1], o[2], o[3], n)
+                var n = new window[e](this.canvas.width, this.canvas.height);
+                n.add(this, "\u6b63\u5e38", 0, 0, t), this.tempPsLib = n;
+                for (var r = 0; r < this.layers.length; r++) {
+                    var i = this.layers[r], s = i[0].layers, o = i[0];
+                    s[s.length - 1] && s[s.length - 1][0].type == 1 && (o = s[s.length - 1][0]), n.add(o, i[1], i[2], i[3], t)
                 }
-                this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
             }
-            this.context.putImageData(this.tempPsLib.imgData, 0, 0);
-            if (t) if (typeof t == "string") {
-                var f = document.querySelector(t);
-                f.appendChild(this.canvas)
-            } else t.appendChild(this.canvas); else document.body.appendChild(this.canvas);
+        }, show: function (e, t, n) {
+            if (!n && this.useWorker) return this.dorsyWorker.queue.push(["show", e, t]), this;
+            this.complileLayers(t), this.context.putImageData(this.tempPsLib.imgData, 0, 0);
+            if (e) if (typeof e == "string") {
+                var r = document.querySelector(e);
+                r.appendChild(this.canvas)
+            } else e.appendChild(this.canvas); else document.body.appendChild(this.canvas);
             return this
         }, replaceChild: function (e) {
             var t;
@@ -206,18 +231,10 @@ try {
             return this.layers[e] = this.layers[t], this.layers[t] = n, this
         }, deleteLayers: function (e) {
             this.layers = this.layers.del(e)
-        }, save: function (t, n, i) {
-            t = t || "png", t = t.toLowerCase(), n = n || .8, t == "jpg" && (t = "jpeg");
-            var s = "image/" + t;
-            if (!i && this.useWorker) return this.dorsyWorker.queue.push(["save"]), r.call(this), this;
-            if (!this.layers.length) return this.context.putImageData(this.imgData, 0, 0), this.canvas.toDataURL(s, n);
-            var o = new window[e](this.canvas.width, this.canvas.height);
-            o.add(this, "\u6b63\u5e38", 0, 0, isFast), this.tempPsLib = o;
-            for (var u = 0; u < this.layers.length; u++) {
-                var a = this.layers[u], f = a[0].layers, l = a[0];
-                f[f.length - 1] && f[f.length - 1][0].type == 1 && (l = f[f.length - 1][0]), o.add(l, a[1], a[2], a[3], isFast)
-            }
-            return this.context.clearRect(0, 0, this.canvas.width, this.canvas.height), this.context.putImageData(o.imgData, 0, 0), this.canvas.toDataURL(s, n)
+        }, save: function (e, t, n) {
+            e = e || "png", e = e.toLowerCase(), t = t || .8, e == "jpg" && (e = "jpeg");
+            var i = "image/" + e;
+            return !n && this.useWorker ? (this.dorsyWorker.queue.push(["save"]), r.call(this), this) : (this.complileLayers(), this.context.putImageData(this.tempPsLib.imgData, 0, 0), this.canvas.toDataURL(i, t))
         }, saveFile: function (e, t) {
             e = e || "AlloyImage\u5408\u6210\u56fe\u50cf.jpg", t = t || 1;
             var n = /.*.(jpg|png|gif|jpeg)$/g, r = "png";
@@ -231,21 +248,35 @@ try {
         }, saveAsDataURL: function () {
         }, saveAsBlob: function () {
         }, saveAsBuffer: function () {
-        }, drawRect: function (e) {
-            var t;
-            (t = document.getElementById("imgRect")) || (t = document.createElement("canvas"), t.id = "imgRect", document.body.appendChild(t), t.width = parseInt(this.canvas.width), t.height = parseInt(this.canvas.height));
-            var n = t.getContext("2d");
-            n.clearRect(0, 0, t.width, t.height);
-            var r = [], i = this.tempPsLib.imgData.data;
-            for (var s = 0, o = i.length; s < o; s++) r[i[s]] ? r[i[s]]++ : r[i[s]] = 1;
-            n.beginPath(), n.moveTo(0, t.height);
-            var u = 0;
-            for (var s = 0; s < 255; s++) r[s] > u && (u = r[s]);
-            for (var s = 0; s < 255; s++) {
-                var a = r[s] || 0;
-                a = t.height - a / u * .8 * t.height, n.lineTo(s / 256 * t.width, a, 1, 1)
-            }
-            n.lineTo(t.width + 10, t.height), n.fill()
+        }, drawRect: function (e, t) {
+            var n;
+            t || (t = "RGB");
+            var r = (t || "").replace("R", "0").replace("G", "1").replace("B", "2"),
+                i = [r.indexOf("0") > -1, r.indexOf("1") > -1, r.indexOf("2") > -1];
+            (n = document.getElementById("imgRect")) || (n = document.createElement("canvas"), n.id = "imgRect", document.body.appendChild(n), n.width = parseInt(this.canvas.width), n.height = parseInt(this.canvas.height));
+            var s = n.getContext("2d");
+            s.clearRect(0, 0, n.width, n.height);
+            var o = [[], [], []];
+            this.complileLayers();
+            var u = this.tempPsLib.imgData.data, a = this.tempPsLib.imgData.width, f = this.tempPsLib.imgData.height;
+            if (r) for (var l = 0; l < f; l++) for (var c = 0; c < a; c++) {
+                var h = l * a + c, p = h * 4;
+                for (var d = 0; d < 3; d++) i[d] && (o[d][u[p + d]] ? o[d][u[p + d]]++ : o[d][u[p + d]] = 1)
+            } else for (var h = 0, v = u.length; h < v; h++) o[u[h]] ? o[u[h]]++ : o[u[h]] = 1;
+            var m = function (e, t) {
+                s.beginPath(), s.moveTo(0, n.height);
+                var r = 0;
+                for (var i = 0; i < 255; i++) e[i] > r && (r = e[i]);
+                for (var i = 0; i < 255; i++) {
+                    var o = e[i] || 0;
+                    o = n.height - o / r * .8 * n.height, s.lineTo(i / 256 * n.width, o)
+                }
+                s.lineTo(n.width + 10, n.height), s.closePath(), s.fillStyle = t, s.fill()
+            };
+            if (r) {
+                var g = ["red", "green", "blue"];
+                for (var h = 0; h < o.length; h++) o[h].length && m(o[h], g[h])
+            } else m(o, "black")
         }, ps: function (e) {
             if (e == "\u539f\u56fe" || e == "origin" || e == "") return this;
             var t = n.reflectEasy(e), r = t.call(this, this.canvas);
@@ -270,7 +301,12 @@ try {
                 p = Math.max(a[0].data[0][1], a[1].data[0][1], a[2].data[0][1], a[3].data[0][1]),
                 d = Math.min(a[0].data[0][1], a[1].data[0][1], a[2].data[0][1], a[3].data[0][1]), v = ~~(c - h),
                 m = ~~(p - d);
-            return o.canvas.width = v, o.canvas.height = m, o.translate(-h, -d), o.transform.apply(o, t), o.drawImage(s.canvas, 0, 0), this.canvas.width = v, this.canvas.height = m, this.width = v, this.height = m, this.imgData = o.getImageData(0, 0, v, m), this
+            o.canvas.width = v, o.canvas.height = m, o.translate(-h, -d), o.transform.apply(o, t), o.drawImage(s.canvas, 0, 0), this.canvas.width = v, this.canvas.height = m, this.width = v, this.height = m, this.imgData = o.getImageData(0, 0, v, m);
+            for (var l = this.layers.length - 1; l > -1; l--) {
+                var g = this.layers[l];
+                (g[0].type === 2 || g[0].type === 1) && g[0].transform(t, n, r)
+            }
+            return this
         }, scale: function (e, t) {
             var t = t || e;
             return this.transform([e, 0, 0, t, 0, 0])
@@ -470,13 +506,13 @@ try {
             }
             return e
         }(), r = {
-            getModuleName: function (r) {
-                var i;
-                if (i = n[r]) {
-                    var s = t[i][r] || r;
-                    return {spaceName: i, actName: s}
+            getModuleName: function (e) {
+                var r;
+                if (r = n[e]) {
+                    var i = t[r][e] || e;
+                    return {spaceName: r, actName: i}
                 }
-                e.destroySelf("AI_ERROR:\u8c03\u7528AI\u4e0d\u5b58\u5728\u7684\u65b9\u6cd5" + r)
+                throw new Error("AI_ERROR:\u8c03\u7528AI\u4e0d\u5b58\u5728\u7684\u65b9\u6cd5" + e)
             }, getEasyFun: function (e) {
                 return {spaceName: "ComEffect", actName: t.ComEffect[e] || e}
             }, getConfig: function () {
@@ -495,7 +531,7 @@ try {
                     for (var i = 0; i < e; i++) u(i * t, (i + 1) * t - 1, r);
                     e > 1 && o()
                 }
-                
+
                 function u(r, s, o) {
                     var u = Math.pow(2, o - 1);
                     for (var a = r, f = 0; a <= s - u; a++) {
@@ -505,7 +541,7 @@ try {
                         e[a] = p, e[l] = d, f++
                     }
                 }
-                
+
                 var n = e.length, r = 0, i = [];
                 for (var s = 0; s < n; s++) i[s] = this.exp(-2 * Math.PI * s / n);
                 return o(), e
@@ -540,7 +576,7 @@ try {
                     var u = s / i;
                     return u
                 }
-                
+
                 var n = e.length, i = function (e) {
                     var i = 0;
                     for (var s = 0; s < n; s++) {
@@ -683,7 +719,7 @@ try {
                                 o()
                             }, t)
                         }
-                        
+
                         o()
                     } else s == "show" ? (n.show(e[1], e[2], 1), this.shiftAction()) : s == "complete" ? (e[1] && e[1](), this.shiftAction()) : s == "clone" ? (n.clone(1), this.shiftAction()) : s == "save" ? (n.save(0, 1), this.shiftAction()) : s == "replace" && (n.replace(e[1], 1), this.shiftAction())
                 }, callback: function (e) {
@@ -759,17 +795,17 @@ try {
             var l = a / n;
             return l === 0 ? 1 : l
         }
-        
+
         function n(e, n, r, i, s, o, u, a, f, l) {
             var c = t(n);
             e.drawImage(n, r * c, i * c, s * c, o * c, u, a, f, l)
         }
-        
+
         function r(e, t, r, i) {
             var s = 0, o = 0, u = t.width, a = t.height, f = 0, l = 0;
             n(e, t, s, o, u, a, f, l, r, i)
         }
-        
+
         var i = {drawImageIOS: r, drawImageIOSFix: n};
         return i
     })
@@ -927,21 +963,6 @@ try {
         return t
     })
 }("psLib"), function (e) {
-    window[e].module("Filter.ImageEnhance", function (e) {
-        var t = {
-            process: function (e, t, n) {
-                function f(e) {
-                }
-                
-                var r = arg || .5, i = e.data, s = e.width, o = e.height, u = t || {x: 10, y: 10},
-                    a = n || {x: 50, y: 40};
-                for (var l = 0, c = i.length; l < c; l += 4) ;
-                return e.data = i, e
-            }
-        };
-        return t
-    })
-}("psLib"), function (e) {
     window[e].module("Filter.corrode", function (e) {
         var t = {
             process: function (e, t) {
@@ -964,7 +985,7 @@ try {
                     var i = e.lib.dorsyMath.distance([t, n], [l, c]), o = (i - p) / (h - p);
                     return o < 0 && (o = 0), d(o, 0, .02, .3, 1) * r * s / 255
                 }
-                
+
                 var r = parseInt(n[0]) || 3, i = n[2] || "round", s = n[1] || 30, o = t.data, u = t.width, a = t.height,
                     f = r * 2 + 1, l = u * 2 / 3, c = a * 1 / 2, h = e.lib.dorsyMath.distance([l, c]),
                     p = h * (1 - r / 10), d = function (e, t, n, r, i) {
@@ -1044,6 +1065,21 @@ try {
         return t
     })
 }("psLib"), function (e) {
+    window[e].module("Filter.ImageEnhance", function (e) {
+        var t = {
+            process: function (e, t, n) {
+                function f(e) {
+                }
+
+                var r = arg || .5, i = e.data, s = e.width, o = e.height, u = t || {x: 10, y: 10},
+                    a = n || {x: 50, y: 40};
+                for (var l = 0, c = i.length; l < c; l += 4) ;
+                return e.data = i, e
+            }
+        };
+        return t
+    })
+}("psLib"), function (e) {
     window[e].module("Filter.borderline", function (e) {
         var t = {
             process: function (t, n) {
@@ -1098,7 +1134,8 @@ try {
         var t = {
             process: function (e, t) {
                 var n = parseInt(t[0]) || 16, r = e.data, i = e.width, s = e.height, o = n * 2 + 1;
-                for (var u = 0; u < i; u++) for (var a = 0; a < s; a++) {
+                for (var u = 0; u < i; u++) for (var a = 0; a < s
+                    ; a++) {
                     var f = a * i + u, l = 0;
                     for (var c = 0; c < 3; c++) l += r[f * 4 + c];
                     l /= 3;
@@ -1139,25 +1176,24 @@ try {
         return t
     })
 }("psLib"), function (e) {
-    window[e].module("Filter.sharp"
-        , function (e) {
-            var t = {
-                process: function (e, t) {
-                    var n = t[0] || .6, r = e.data, i = e.width, s = e.height;
-                    for (var o = 0, u = r.length; o < u; o += 4) {
-                        var a = o / 4, f = parseInt(a / i), l = a % i;
-                        if (f == 0 || l == 0) continue;
-                        var c = ((f - 1) * i + (l - 1)) * 4, h = ((f - 1) * i + l) * 4, p = (a - 1) * 4;
-                        for (var d = 0; d < 3; d++) {
-                            var v = r[o + d] - (r[h + d] + r[p + d] + r[c + d]) / 3;
-                            r[o + d] += v * n
-                        }
+    window[e].module("Filter.sharp", function (e) {
+        var t = {
+            process: function (e, t) {
+                var n = t[0] || .6, r = e.data, i = e.width, s = e.height;
+                for (var o = 0, u = r.length; o < u; o += 4) {
+                    var a = o / 4, f = parseInt(a / i), l = a % i;
+                    if (f == 0 || l == 0) continue;
+                    var c = ((f - 1) * i + (l - 1)) * 4, h = ((f - 1) * i + l) * 4, p = (a - 1) * 4;
+                    for (var d = 0; d < 3; d++) {
+                        var v = r[o + d] - (r[h + d] + r[p + d] + r[c + d]) / 3;
+                        r[o + d] += v * n
                     }
-                    return e
                 }
-            };
-            return t
-        })
+                return e
+            }
+        };
+        return t
+    })
 }("psLib"), function (e) {
     window[e].module("Filter.toGray", function (e) {
         var t = {

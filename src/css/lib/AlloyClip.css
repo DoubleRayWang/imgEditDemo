@@ -270,7 +270,7 @@
 }
 
 .AlloyClipOptionPW {
-    height: 70px;
+    height: 60px;
     flex: 1;
     margin: 0;
     overflow: auto;
@@ -280,9 +280,7 @@
 .AlloyClipFilter {
     list-style: none;
     text-align: left;
-    padding: 0;
-    padding-left: 10px;
-    padding-top: 10px;
+    padding: 10px 0 0 10px;
     white-space: nowrap;
     overflow: visible;
     margin: 0;
@@ -342,7 +340,7 @@
 #_clip_ li.apScrollBarWrapper {
     display: inline-block;
     border: 1px silver solid;
-    padding:2px 6px 10px;
+    padding: 10px 10px 20px;
     border-radius: 4px;
     transition: all .25s;
 }
